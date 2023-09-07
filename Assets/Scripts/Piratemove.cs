@@ -31,7 +31,7 @@ public class Piratemove : MonoBehaviour
 
     // Button detection
     private bool onButton = false;
-    private Button lastSeenButton = null;
+    //private Button lastSeenButton = null;
 
     // audio stuff
     private AudioSource footstepAudio;
@@ -149,10 +149,10 @@ public class Piratemove : MonoBehaviour
         }
         else // If we are not standing on a button, reset onButton
         {
-            if (onButton && lastSeenButton != null)
+            //if (onButton && lastSeenButton != null)
             {
-                lastSeenButton.Release();
-                lastSeenButton = null;
+             //   lastSeenButton.Release();
+            //    lastSeenButton = null;
             }
             onButton = false;
         }
@@ -181,9 +181,9 @@ public class Piratemove : MonoBehaviour
     // When we are on a button, call its OnHit method
     private void OnButtonPress(GameObject button)
     {
-        Button buttonScript = button.GetComponent<Button>();
-        lastSeenButton = buttonScript;
-        buttonScript.OnHit();
+        //Button buttonScript = button.GetComponent<Button>();
+       // lastSeenButton = buttonScript;
+      //  buttonScript.OnHit();
     }
 
     // Used only for detecting death by falling
