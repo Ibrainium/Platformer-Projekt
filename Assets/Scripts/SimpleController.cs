@@ -1,33 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-/**
- * Example of a basic player movement script.
- * 
- * The idea is to calculate a movement vector
- * based on various factors like user input and
- * gravity, and then at the end of the Update
- * function, ask the character controller to
- * move along that vector.
- * 
- * There are many, many tweaks that could be
- * made to make the movement feel better and
- * work better with various obstacles, but as
- * this script is only an example, I've kept
- * it simple.
- * */
 [RequireComponent(typeof(CharacterController))]
 public class SimpleController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float gravity = 9.81f;
-
+    [Tooltip("What happens when the robot dies?")]
+    public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
 
     private Vector3 moveDirection = Vector3.zero;
+
+    // Moving platforms
+    private Transform platform = null;
+    private Vector3 platformOffset;
+    public LayerMask platformLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +47,7 @@ public class SimpleController : MonoBehaviour
         // Handle movement on the ground
         if (isGrounded)
         {
-            moveDirection = new Vector3(v, moveDirection.y, h).normalized * moveSpeed;
+            moveDirection = new Vector3(-v, moveDirection.y, h).normalized * moveSpeed;
 
             // Face in the move direction
             if (h != 0 || v != 0)
@@ -75,6 +67,29 @@ public class SimpleController : MonoBehaviour
 
         // Move
         controller.Move(moveDirection * Time.deltaTime);
+
+        // Parent under platform
+        FindPlatform();
+    }
+
+    // Keep track of which platform we are standing on
+    // - used for moving along with moving platforms
+    private void FindPlatform()
+    {
+        // Make a ray that points down
+        Ray downRay = new Ray(transform.position + Vector3.up, Vector3.down);
+        RaycastHit hit;
+
+        // Check if it hit a platform
+        if (Physics.Raycast(downRay, out hit, 10f, platformLayer))
+        {
+            platform = hit.transform;
+            platformOffset = platform.InverseTransformPoint(transform.position);
+        }
+        else
+        {
+            platform = null;
+        }
     }
 
     // Built-in ground check is bad, so use raycast instead
@@ -84,5 +99,18 @@ public class SimpleController : MonoBehaviour
             transform.position + controller.center,                     // from the middle of the controller...
             Vector3.down,                                               // ...pointing downwards...
             controller.bounds.extents.y + controller.skinWidth + 0.2f); // ... to the bottom of the controller.
+    }
+    // Used only for detecting death by falling
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.name == "CatchFalls")
+        {
+            OnDeath.Invoke();
+        }
+    }
+
+    public void Kill()
+    {
+        OnDeath.Invoke();
     }
 }

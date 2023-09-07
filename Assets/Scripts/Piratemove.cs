@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
-public class Piratemove : MonoBehaviour
+public class RobotMove : MonoBehaviour
 {
-
     [Tooltip("Movement speed of the robot")]
     public float moveSpeed = 1f;
     [Tooltip("How fast do we fall?")]
@@ -29,9 +29,6 @@ public class Piratemove : MonoBehaviour
     private Transform platform = null;
     private Vector3 platformOffset;
 
-    // Button detection
-    private bool onButton = false;
-    //private Button lastSeenButton = null;
 
     // audio stuff
     private AudioSource footstepAudio;
@@ -122,39 +119,9 @@ public class Piratemove : MonoBehaviour
             // Actually move
             controller.Move(baseDirection + (moveSpeed * Time.deltaTime * direction));
 
-            // Check if we are on a button
-            FindButton();
 
             // Parent under platform
             FindPlatform();
-        }
-    }
-
-    // Look for a button under our feet.
-    private void FindButton()
-    {
-        // Make a ray that points down
-        Ray downRay = new Ray(transform.position + Vector3.up, Vector3.down);
-        RaycastHit hit;
-
-        // Check if it hit a button
-        if (Physics.Raycast(downRay, out hit, 10f, buttonLayer))
-        {
-            // We only act the first time we touch a given button
-            if (!onButton)
-            {
-                OnButtonPress(hit.collider.gameObject);
-                onButton = true; // Ensures we only do one button press
-            }
-        }
-        else // If we are not standing on a button, reset onButton
-        {
-            //if (onButton && lastSeenButton != null)
-            {
-             //   lastSeenButton.Release();
-            //    lastSeenButton = null;
-            }
-            onButton = false;
         }
     }
 
@@ -182,8 +149,8 @@ public class Piratemove : MonoBehaviour
     private void OnButtonPress(GameObject button)
     {
         //Button buttonScript = button.GetComponent<Button>();
-       // lastSeenButton = buttonScript;
-      //  buttonScript.OnHit();
+        //lastSeenButton = buttonScript;
+        //buttonScript.OnHit();
     }
 
     // Used only for detecting death by falling

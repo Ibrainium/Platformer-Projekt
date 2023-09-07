@@ -2410,7 +2410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPoint: {fileID: 511409821}
   EndPoint: {fileID: 1872383996}
-  moveSpeed: 2
+  moveSpeed: 3
 --- !u!143 &463916863
 CharacterController:
   m_ObjectHideFlags: 0
@@ -11243,12 +11243,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6313939236197506543, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
+      propertyPath: gravity
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6313939236197506543, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6313939236197506543, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: jumpHeight
-      value: 6.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8844877510417703916, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: m_LocalScale.x
@@ -11260,11 +11264,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8844877510417703916, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.77
+      value: 15.52
       objectReference: {fileID: 0}
     - target: {fileID: 8844877510417703916, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.79
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 8844877510417703916, guid: 94780cbaff83ae441b9018eb32e0ee80, type: 3}
       propertyPath: m_LocalRotation.w
