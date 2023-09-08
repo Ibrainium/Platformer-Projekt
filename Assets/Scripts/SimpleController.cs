@@ -60,7 +60,7 @@ public class SimpleController : MonoBehaviour
             // Face in the move direction
             if (h != 0 || v != 0)
             {
-                transform.forward = new Vector3(h, 0f, v);
+                transform.forward = new Vector3(-v, 0f, h);
             }
         }
 
