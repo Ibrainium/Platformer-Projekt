@@ -31,10 +31,10 @@ public class Gameover : MonoBehaviour
     }
     public void LoadMainMenu()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         
-        SceneManager.LoadScene("protoype");
+        SceneManager.LoadScene("Main menu");
     }
     public void ExitGame()
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -109,17 +110,6 @@ public class SimpleController : MonoBehaviour
             Vector3.down,                                               // ...pointing downwards...
             controller.bounds.extents.y + controller.skinWidth + 0.2f); // ... to the bottom of the controller.
     }
-    // Used only for detecting death by falling
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.name == "CatchFalls")
-        {
-            OnDeath.Invoke();
-        }
-    }
-
-    public void Kill()
-    {
-        OnDeath.Invoke();
-    }
+    
+    If transform.position 
 }
