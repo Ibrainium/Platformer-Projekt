@@ -110,6 +110,5 @@ public class SimpleController : MonoBehaviour
             Vector3.down,                                               // ...pointing downwards...
             controller.bounds.extents.y + controller.skinWidth + 0.2f); // ... to the bottom of the controller.
     }
-    
-    If transform.position 
+
 }
