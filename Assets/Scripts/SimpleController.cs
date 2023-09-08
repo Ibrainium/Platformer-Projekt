@@ -14,7 +14,7 @@ public class SimpleController : MonoBehaviour
     public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
-
+    private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
 
     // Moving platforms
@@ -26,11 +26,17 @@ public class SimpleController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(transform.position.y  < -100)
+        {
+
+        }
+
         // Check if we're on the ground
         isGrounded = GroundControl();
 
@@ -60,7 +66,12 @@ public class SimpleController : MonoBehaviour
             // Face in the move direction
             if (h != 0 || v != 0)
             {
+                animator.SetBool("IsMoving", true);
                 transform.forward = new Vector3(-v, 0f, h);
+            }
+            else
+            {
+                animator.SetBool("IsMoving", false);
             }
         }
 
