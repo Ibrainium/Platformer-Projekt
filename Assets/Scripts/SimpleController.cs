@@ -38,6 +38,13 @@ public class SimpleController : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
         bool wantJump = Input.GetButtonDown("Jump");
 
+        // Moving platform support
+        Vector3 baseDirection = Vector3.zero;
+        if (platform)
+        {
+            baseDirection = platform.TransformPoint(platformOffset) - transform.position;
+        }
+
         // Reset y velocity when we hit the ground
         if (isGrounded && moveDirection.y < 0)
         {
@@ -66,7 +73,7 @@ public class SimpleController : MonoBehaviour
         moveDirection.y -= gravity * Time.deltaTime;
 
         // Move
-        controller.Move(moveDirection * Time.deltaTime);
+        controller.Move(baseDirection + (moveDirection * Time.deltaTime));
 
         // Parent under platform
         FindPlatform();
@@ -83,11 +90,13 @@ public class SimpleController : MonoBehaviour
         // Check if it hit a platform
         if (Physics.Raycast(downRay, out hit, 10f, platformLayer))
         {
+            Debug.Log("on platform");
             platform = hit.transform;
             platformOffset = platform.InverseTransformPoint(transform.position);
         }
         else
         {
+            Debug.Log("off platform");
             platform = null;
         }
     }
