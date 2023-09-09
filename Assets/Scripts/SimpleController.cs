@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class SimpleController : MonoBehaviour
@@ -10,7 +11,8 @@ public class SimpleController : MonoBehaviour
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float gravity = 9.81f;
-    [Tooltip("What happens when the robot dies?")]
+    
+
     public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
@@ -32,9 +34,9 @@ public class SimpleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.y  < -100)
+        if(transform.position.y  < -40)
         {
-
+            SceneManager.LoadScene("Gameover");
         }
 
         // Check if we're on the ground
