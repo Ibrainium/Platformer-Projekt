@@ -11,7 +11,7 @@ public class Gameover : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         // Load scene
-        SceneManager.LoadScene("-");
+        SceneManager.LoadScene("Win");
     }
 
     public void LoadMainLevel()
@@ -31,10 +31,10 @@ public class Gameover : MonoBehaviour
     }
     public void LoadMainMenu()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         
-        SceneManager.LoadScene("protoype");
+        SceneManager.LoadScene("Main menu");
     }
     public void ExitGame()
     {

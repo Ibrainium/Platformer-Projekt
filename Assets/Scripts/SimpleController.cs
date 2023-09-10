@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class SimpleController : MonoBehaviour
@@ -9,11 +11,12 @@ public class SimpleController : MonoBehaviour
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float gravity = 9.81f;
-    [Tooltip("What happens when the robot dies?")]
+    
+
     public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
-
+    private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
 
     // Moving platforms
@@ -25,11 +28,17 @@ public class SimpleController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(transform.position.y  < -40)
+        {
+            SceneManager.LoadScene("Gameover");
+        }
+
         // Check if we're on the ground
         isGrounded = GroundControl();
 
@@ -59,7 +68,12 @@ public class SimpleController : MonoBehaviour
             // Face in the move direction
             if (h != 0 || v != 0)
             {
-                transform.forward = new Vector3(h, 0f, v);
+                animator.SetBool("IsMoving", true);
+                transform.forward = new Vector3(-v, 0f, h);
+            }
+            else
+            {
+                animator.SetBool("IsMoving", false);
             }
         }
 
@@ -109,17 +123,5 @@ public class SimpleController : MonoBehaviour
             Vector3.down,                                               // ...pointing downwards...
             controller.bounds.extents.y + controller.skinWidth + 0.2f); // ... to the bottom of the controller.
     }
-    // Used only for detecting death by falling
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.name == "CatchFalls")
-        {
-            OnDeath.Invoke();
-        }
-    }
 
-    public void Kill()
-    {
-        OnDeath.Invoke();
-    }
 }
