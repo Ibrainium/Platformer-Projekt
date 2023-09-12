@@ -18,6 +18,8 @@ public class SimpleController : MonoBehaviour
     private bool isGrounded = false;
     private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
+   
+    
 
     // Moving platforms
     private Transform platform = null;
@@ -30,10 +32,50 @@ public class SimpleController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
+    // Built-in ground check is bad, so use raycast instead
+    private bool GroundControl()
+    {
+        Debug.DrawRay(transform.position + controller.center,
+            Vector3.down, Color.cyan);
+        RaycastHit hit;
+        if (Physics.Raycast(new Ray(transform.position + controller.center,
+                                   Vector3.down),
+                           out hit,
+                           controller.bounds.extents.y + controller.skinWidth + 1f))
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            Debug.Log(hit.point);
+            Debug.Log(transform.position + controller.center);
+            if ((hit.point - (transform.position + controller.center)).magnitude > 1.1f + controller.skinWidth)
+            {
+                return false;
+            }
+
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                platform = hit.transform;
+                platformOffset = platform.InverseTransformPoint(transform.position);
+            }
+            else
+            {
+                platform = null;
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
+
+
+
+
         if(transform.position.y  < -40)
         {
             SceneManager.LoadScene("Gameover");
@@ -91,63 +133,7 @@ public class SimpleController : MonoBehaviour
         controller.Move(baseDirection + (moveDirection * Time.deltaTime));
 
         // Parent under platform
-        FindPlatform();
-    }
-
-    // Keep track of which platform we are standing on
-    // - used for moving along with moving platforms
-    private void FindPlatform()
-    {
-        // Make a ray that points down
-        Ray downRay = new Ray(transform.position + Vector3.up, Vector3.down);
-        RaycastHit hit;
-
-        // Check if it hit a platform
-        if (Physics.Raycast(downRay, out hit, 10f, platformLayer))
-        {
-            platform = hit.transform;
-            platformOffset = platform.InverseTransformPoint(transform.position);
-        }
-        else
-        {
-            platform = null;
-        }
-    }
-
-    // Built-in ground check is bad, so use raycast instead
-    private bool GroundControl()
-    {
-        Debug.DrawRay(transform.position + controller.center,
-            Vector3.down, Color.cyan);
-        RaycastHit hit;
-        if(Physics.Raycast(new Ray(transform.position+controller.center,
-                                   Vector3.down),
-                           out hit,
-                           controller.bounds.extents.y + controller.skinWidth + 1f))
-        {
-            //Debug.Log(hit.collider.gameObject.name);
-            Debug.Log(hit.point);
-            Debug.Log(transform.position + controller.center);
-            if ((hit.point - (transform.position + controller.center)).magnitude > 1.1f + controller.skinWidth)
-            {
-                return false;
-            }
-
-            if (here);
-                platform = hit.transform;
-                platformOffset = platform.InverseTransformPoint(transform.position);
-            }
-            else
-            {
-                platform = null;
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        //FindPlatform();
     }
 
 }
