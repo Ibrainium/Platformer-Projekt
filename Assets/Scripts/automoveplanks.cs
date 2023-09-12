@@ -31,8 +31,6 @@ public class automoveplanks : MonoBehaviour
             {
                 targetPosition = EndPoint.position;
             }
-
-            //MovingToEnd = !MovingToEnd;
         }
 
 

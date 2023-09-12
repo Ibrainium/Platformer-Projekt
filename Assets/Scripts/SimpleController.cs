@@ -41,6 +41,7 @@ public class SimpleController : MonoBehaviour
 
         // Check if we're on the ground
         isGrounded = GroundControl();
+        Debug.Log(isGrounded);
 
         // Get user input (old input system)
         float h = Input.GetAxisRaw("Horizontal");
@@ -104,13 +105,11 @@ public class SimpleController : MonoBehaviour
         // Check if it hit a platform
         if (Physics.Raycast(downRay, out hit, 10f, platformLayer))
         {
-            Debug.Log("on platform");
             platform = hit.transform;
             platformOffset = platform.InverseTransformPoint(transform.position);
         }
         else
         {
-            Debug.Log("off platform");
             platform = null;
         }
     }
@@ -118,10 +117,37 @@ public class SimpleController : MonoBehaviour
     // Built-in ground check is bad, so use raycast instead
     private bool GroundControl()
     {
-        return Physics.Raycast(
-            transform.position + controller.center,                     // from the middle of the controller...
-            Vector3.down,                                               // ...pointing downwards...
-            controller.bounds.extents.y + controller.skinWidth + 0.2f); // ... to the bottom of the controller.
+        Debug.DrawRay(transform.position + controller.center,
+            Vector3.down, Color.cyan);
+        RaycastHit hit;
+        if(Physics.Raycast(new Ray(transform.position+controller.center,
+                                   Vector3.down),
+                           out hit,
+                           controller.bounds.extents.y + controller.skinWidth + 1f))
+        {
+            //Debug.Log(hit.collider.gameObject.name);
+            Debug.Log(hit.point);
+            Debug.Log(transform.position + controller.center);
+            if ((hit.point - (transform.position + controller.center)).magnitude > 1.1f + controller.skinWidth)
+            {
+                return false;
+            }
+
+            if (here);
+                platform = hit.transform;
+                platformOffset = platform.InverseTransformPoint(transform.position);
+            }
+            else
+            {
+                platform = null;
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
