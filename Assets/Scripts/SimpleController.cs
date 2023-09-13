@@ -43,11 +43,9 @@ public class SimpleController : MonoBehaviour
                            out hit,
                            controller.bounds.extents.y + controller.skinWidth + 1f))
         {
-            Debug.Log(hit.collider.gameObject.name);
-            Debug.Log(hit.point);
-            Debug.Log(transform.position + controller.center);
             if ((hit.point - (transform.position + controller.center)).magnitude > 1.1f + controller.skinWidth)
             {
+                platform = null;
                 return false;
             }
 
@@ -65,6 +63,7 @@ public class SimpleController : MonoBehaviour
         }
         else
         {
+            platform = null;
             return false;
         }
     }
@@ -73,7 +72,7 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
 
-
+         
 
 
         if(transform.position.y  < -40)
@@ -81,15 +80,12 @@ public class SimpleController : MonoBehaviour
             SceneManager.LoadScene("Gameover");
         }
 
-        // Check if we're on the ground
-        isGrounded = GroundControl();
-        Debug.Log(isGrounded);
-
         // Get user input (old input system)
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         bool wantJump = Input.GetButtonDown("Jump");
 
+        Debug.Log(platform);
         // Moving platform support
         Vector3 baseDirection = Vector3.zero;
         if (platform)
@@ -134,6 +130,10 @@ public class SimpleController : MonoBehaviour
 
         // Parent under platform
         //FindPlatform();
+
+        // Check if we're on the ground
+        isGrounded = GroundControl();
+        Debug.Log(isGrounded);
     }
 
 }
