@@ -100,9 +100,11 @@ public class SimpleController : MonoBehaviour
         }
 
         // Handle movement on the ground
-        if (isGrounded)
-        {
-            moveDirection = new Vector3(-v, moveDirection.y, h).normalized * moveSpeed;
+        //if (isGrounded)
+        //{
+        float yvel = moveDirection.y;
+            moveDirection = new Vector3(-v, 0, h).normalized * moveSpeed;
+        moveDirection.y = yvel;
 
             // Face in the move direction
             if (h != 0 || v != 0)
@@ -114,7 +116,7 @@ public class SimpleController : MonoBehaviour
             {
                 animator.SetBool("IsMoving", false);
             }
-        }
+        //}
 
         // Handle jumping
         if (isGrounded && wantJump)
