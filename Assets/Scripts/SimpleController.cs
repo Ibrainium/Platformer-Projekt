@@ -7,19 +7,21 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class SimpleController : MonoBehaviour
-{
+{ 
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float gravity = 9.81f;
-    
+
 
     public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
     private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
-   
-    
+    private bool IsJumping = false;
+    private bool IsFalling = false;
+
+
 
     // Moving platforms
     private Transform platform = null;
@@ -72,10 +74,7 @@ public class SimpleController : MonoBehaviour
     void Update()
     {
 
-         
-
-
-        if(transform.position.y  < -40)
+        if (transform.position.y < -40)
         {
             SceneManager.LoadScene("Gameover");
         }
@@ -103,39 +102,63 @@ public class SimpleController : MonoBehaviour
         //if (isGrounded)
         //{
         float yvel = moveDirection.y;
-            moveDirection = new Vector3(-v, 0, h).normalized * moveSpeed;
+        moveDirection = new Vector3(-v, 0, h).normalized * moveSpeed;
         moveDirection.y = yvel;
 
-            // Face in the move direction
-            if (h != 0 || v != 0)
-            {
-                animator.SetBool("IsMoving", true);
-                transform.forward = new Vector3(-v, 0f, h);
-            }
-            else
-            {
-                animator.SetBool("IsMoving", false);
-            }
+        // Face in the move direction
+        if (h != 0 || v != 0)
+        {
+            animator.SetBool("IsMoving", true);
+            transform.forward = new Vector3(-v, 0f, h);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+
+        }
         //}
+
 
         // Handle jumping
         if (isGrounded && wantJump)
         {
             moveDirection.y = Mathf.Sqrt(2f * gravity * jumpHeight);
+
+            // Karakteren er nu i en springende tilstand
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsFalling", false);
         }
+        else
+        {
+            // Hvis karakteren ikke springer, skal vi kontrollere, om han falder
+            if (moveDirection.y < 0)
+            {
+                IsJumping = false;
+                IsFalling = true;
+                animator.SetBool("IsJumping", false);
+                animator.SetBool("IsFalling", true);
+            }
+            else
+            {
+                IsJumping = false;
+                IsFalling = false;
+                 animator.SetBool("IsJumping", false);
+                 animator.SetBool("IsFalling", false);
+                }
 
-        // Apply gravity
-        moveDirection.y -= gravity * Time.deltaTime;
+                // Apply gravity
+                moveDirection.y -= gravity * Time.deltaTime;
 
-        // Move
-        controller.Move(baseDirection + (moveDirection * Time.deltaTime));
+                // Move
+                controller.Move(baseDirection + (moveDirection * Time.deltaTime));
 
-        // Parent under platform
-        //FindPlatform();
+                // Parent under platform
+                //FindPlatform();
 
-        // Check if we're on the ground
-        isGrounded = GroundControl();
-        Debug.Log(isGrounded);
+                // Check if we're on the ground
+                isGrounded = GroundControl();
+
+                Debug.Log(isGrounded);
+            }
+        }
     }
-
-}
