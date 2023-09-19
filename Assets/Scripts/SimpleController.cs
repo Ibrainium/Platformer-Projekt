@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -21,6 +22,7 @@ public class SimpleController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private bool IsJumping = false;
     private bool IsFalling = false;
+    public bool CaveControls = false;
 
 
 
@@ -71,6 +73,20 @@ public class SimpleController : MonoBehaviour
         }
     }
 
+
+
+    Vector2 GetMoveInp()
+    {
+        if (CaveControls)
+        {
+            return new Vector2(-Input.GetAxisRaw("Horizontal"), -Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -81,8 +97,9 @@ public class SimpleController : MonoBehaviour
         }
 
         // Get user input (old input system)
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        Vector2 move = GetMoveInp();
+        float h = move.x;
+        float v = move.y;
         bool wantJump = Input.GetButtonDown("Jump");
 
         Debug.Log(platform);
@@ -159,6 +176,7 @@ public class SimpleController : MonoBehaviour
 
                 Debug.Log(isGrounded);
 
+               
             }
         }
     }

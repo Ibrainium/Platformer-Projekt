@@ -24,6 +24,8 @@ public class Cameranglechange : MonoBehaviour
         if (other.CompareTag("pirate_man"))
         {
             ShowCaveCamera();
+            SimpleController simpleController = other.gameObject.GetComponent<SimpleController>();
+            simpleController.CaveControls = true;
 
         }
         else
@@ -31,4 +33,5 @@ public class Cameranglechange : MonoBehaviour
             Debug.LogWarning("Object with tag 'pirate_man' not found.");
         }
     }
+
 }
