@@ -11,9 +11,10 @@ public class SimpleController : MonoBehaviour
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float gravity = 9.81f;
+    
+    public int interpolationFramesCount = 45; // Number of frames to completely interpolate between the 2 positions
+    int elapsedFrames = 0;
 
-
-    public UnityEvent OnDeath;
     private CharacterController controller;
     private bool isGrounded = false;
     private Animator animator;
@@ -100,7 +101,7 @@ public class SimpleController : MonoBehaviour
 
         // Handle movement on the ground
         //if (isGrounded)
-        //{
+
         float yvel = moveDirection.y;
         moveDirection = new Vector3(-v, 0, h).normalized * moveSpeed;
         moveDirection.y = yvel;
@@ -152,13 +153,12 @@ public class SimpleController : MonoBehaviour
                 // Move
                 controller.Move(baseDirection + (moveDirection * Time.deltaTime));
 
-                // Parent under platform
-                //FindPlatform();
-
+ 
                 // Check if we're on the ground
                 isGrounded = GroundControl();
 
                 Debug.Log(isGrounded);
+
             }
         }
     }

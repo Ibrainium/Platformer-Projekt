@@ -44,4 +44,14 @@ public class Gameover : MonoBehaviour
         Application.Quit();
 #endif
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("pirate_man"))
+        {
+            Debug.Log("Trigger entered by pirate_man");
+            LoadWinScene();
+
+        
+        }
+    }
 }
