@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class automoveplanks : MonoBehaviour
+public class AutoMoveLogs : MonoBehaviour
 {
     [SerializeField] private Transform StartPoint;
     [SerializeField] private Transform EndPoint;
     [SerializeField] private float moveSpeed = 3f;
 
     private Vector3 targetPosition;
-    private bool MovingToEnd = true;
 
     void Start()
     {
@@ -23,15 +22,15 @@ public class automoveplanks : MonoBehaviour
 
         if (transform.position == targetPosition)
         {
-            if (MovingToEnd)
-            {
-                transform.position = StartPoint.position; // Snap back to startPoint
-            }
-            else
-            {
-                targetPosition = EndPoint.position;
-            }
+
+            transform.position = StartPoint.position; // Snap back to startPoint
         }
+
+        else
+        {
+            targetPosition = EndPoint.position;
+        }
+        
 
 
     }
